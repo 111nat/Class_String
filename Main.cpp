@@ -61,13 +61,30 @@ public:
 	//конструктор сложения двух строчек
 	AString operator+(const AString & other)
 	{
-
+		AString temp;
+		temp.str = new char[strlen(this->str) + strlen(other.str) + 1];
+		int i = 0;
+		for (; i < strlen(this->str); i++) 
+		{
+			temp.str[i] = this->str[i];
+		}
+		for (int j = 0; j < strlen(other.str); j++,i++)
+		{
+			temp.str[i] = other.str[j];
+		}
+		temp.str[strlen(this->str) + strlen(other.str)] = '\0';
+		return temp;
 	}
 
 	//метод вывода строчек в командную строку
-	void print(const AString& other)
+	void print()
 	{
-
+		int length = strlen(str);
+		for (int i = 0; i < length; i++)
+		{
+			cout << str[i];
+		}
+		cout << endl;
 	}
 private:
 	char* str;
@@ -79,9 +96,15 @@ int main()
 {
 	AString str="hello";
 
-	AString str1("hello");
+	AString str1="world";
 
+	AString str2;
+
+	str.print();
 	
+	str2 = str + str1;
+	str2.print();
+
 	return 0;
 }
 
