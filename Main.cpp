@@ -81,7 +81,7 @@ public:
 		return temp;
 	}
 
-	//конструктор +=
+	//конструктор сложения строчки на себя
 	AString& operator+=(const AString & other)
 	{
 		if (this->str != nullptr)
@@ -138,6 +138,42 @@ public:
 
 			}
 		}
+
+		
+	}
+
+	//конструктор ==
+	bool operator ==(const AString& other)
+	{	
+		if (str == nullptr && other.str !=nullptr)
+		{
+			return false;
+		}
+		if (str != nullptr && other.str == nullptr)
+		{
+			return false;
+		}
+		if (str == nullptr && other.str == nullptr)
+		{
+			return true;
+		}
+		if (str != nullptr && other.str != nullptr)
+		{
+			int length_t = strlen(str);
+			int length_o = strlen(other.str);
+			if (length_t != length_o)
+			{
+				return false;
+			}
+			for (int i = 0; i < length_t; i++)
+			{
+				if (str[i] != other.str[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}	
 	}
 
 	//метод вывода строчек в командную строку
@@ -160,15 +196,16 @@ private:
 
 int main() 
 {
-	AString str;
+	AString str="hell";
 
 	AString str2="hello";
 	
 
-	str += str2;
+	//str += str2;
 
-	str.print();
+	//str.print();
 	
+	cout << (str == str2);
 
 	return 0;
 }
