@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class AString
@@ -14,6 +15,7 @@ public:
 	//конструктор класса с входящим параметром типа char
 	AString(const char *str)
 	{
+		
 		int length = strlen(str);
 		this->str = new char[length + 1];
 		for (int i = 0; i < length; i++)
@@ -26,7 +28,20 @@ public:
 	//деструктор класса
 	~AString()
 	{
+		
 		delete[] this->str;
+	}
+
+	//конструктор копирования
+	AString(const AString& other)
+	{
+		int length = strlen(other.str);
+		this->str = new char[length + 1];
+		for (int i = 0; i < length; i++)
+		{
+			this->str[i] = other.str[i];
+		}
+		this->str[length] = '\0';
 	}
 
 	//оператор присваивания
@@ -46,17 +61,7 @@ public:
 		return *this;
 	}
 
-	//конструктор копирования
-	AString(const AString & other)
-	{
-		int length = strlen(other.str);
-		this->str = new char[length + 1];
-		for (int i = 0; i < length; i++)
-		{
-			this->str[i] = other.str[i];
-		}
-		this->str[length] = '\0';
-	}
+	
 
 	//конструктор сложения двух строчек
 	AString operator+(const AString & other)
@@ -76,34 +81,94 @@ public:
 		return temp;
 	}
 
+	//конструктор +=
+	AString& operator+=(const AString & other)
+	{
+		if (this->str != nullptr)
+		{
+			if (other.str != nullptr)
+			{
+				int length_t = strlen(this->str);
+				AString temp1;
+				temp1.str = new char[length_t + 1];
+				for (int i = 0; i < length_t; i++)
+				{
+					temp1.str[i] = this->str[i];
+				}
+				temp1.str[length_t] = '\0';
+
+				int length_o = strlen(other.str);
+				AString temp2;
+				temp2.str = new char[length_o + 1];
+				for (int i = 0; i < length_o; i++)
+				{
+					temp2.str[i] = other.str[i];
+				}
+				temp2.str[length_t] = '\0';
+
+				delete[] this->str;
+				this->str = new char[length_t + length_o + 1];
+
+				int i = 0;
+				for (; i < length_t; i++)
+				{
+					this->str[i] = temp1.str[i];
+				}
+
+				for (int j = 0; j < length_o; j++, i++)
+				{
+					this->str[i] = temp2.str[j];
+				}
+				this->str[length_t + length_o] = '\0';
+				return *this;
+			}else{
+				return *this;
+			}
+		}
+		else {
+			if (other.str != nullptr) {
+				str = new char[strlen(other.str) + 1];
+				for (int j = 0; j < strlen(other.str); j++)
+				{
+					this->str[j] = other.str[j];
+				}
+				this->str[strlen(other.str)] = '\0';
+				return *this;
+			}else{
+
+			}
+		}
+	}
+
 	//метод вывода строчек в командную строку
 	void print()
 	{
-		int length = strlen(str);
-		for (int i = 0; i < length; i++)
+		if (str != nullptr) 
 		{
-			cout << str[i];
+			int length = strlen(str);
+			for (int i = 0; i < length; i++)
+			{
+				cout << str[i];
+			}
+			cout << endl;
 		}
-		cout << endl;
+		
 	}
 private:
 	char* str;
 };
 
-
-
 int main() 
 {
-	AString str="hello";
+	AString str;
 
-	AString str1="world";
+	AString str2="hello";
+	
 
-	AString str2;
+	str += str2;
 
 	str.print();
 	
-	str2 = str + str1;
-	str2.print();
 
 	return 0;
 }
